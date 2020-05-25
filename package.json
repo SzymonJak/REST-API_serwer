@@ -1,0 +1,15 @@
+{
+  "name": "rest-api_serwer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:SzymonJak/REST-API_serwer.git",
+  "author": "Szymon Jakubiak <jakubiak.sz@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "4.17.1",
+    "uuid-random": "^1.3.0"
+  }
+}
