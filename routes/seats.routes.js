@@ -20,20 +20,23 @@ router.route('/seats/:id').get((req, res) => {
 });
 
 router.route('/seats').post((req, res) => {
-    const { author, text } = req.body;
+    const { day, seat, client, email } = req.body;
     const id = uuid();
 
-    if(author && text && id){    
-        const newTestimonial = {
-            id: id,
-            author: author,
-            text: text,
-        };
-        db.seats.push(newTestimonial);
-        res.json( {message: 'OK'} );
+    const newSeat = {
+        id: id,
+        day: day,
+        seat: seat,
+        client: client,
+        email: email,
+    };
+
+    if(db.seats.some(seat => seat.day == newSeat.day && seat.seat == newSeat.seat)){    
+        res.json( {message: 'Sorry, the slot is already taken'} );
     }
     else {
-        res.json('Some data is missing...');
+        db.seats.push(newSeat);
+        res.json( {message: 'OK'} );
     }
 });
 
