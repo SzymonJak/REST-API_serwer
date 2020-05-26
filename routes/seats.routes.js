@@ -31,7 +31,9 @@ router.route('/seats').post((req, res) => {
         email: email,
     };
 
-    if(db.seats.some(seat => seat.day == newSeat.day && seat.seat == newSeat.seat)){    
+    const checkSeat = db.seats.some(seat => seat.day == newSeat.day && seat.seat == newSeat.seat);
+
+    if(checkSeat === true){    
         res.json( {message: 'Sorry, the slot is already taken'} );
     }
     else {
@@ -41,12 +43,9 @@ router.route('/seats').post((req, res) => {
 });
 
 router.route('/seats/:id').put((req, res) => {
-    let elem = db.seats.find(item => {
-        return item.id == req.params.id
-     });
     const { author, text } = req.body;
 
-    elem = {
+    const elem = {
         id: req.params.id,
         author: author,
         text: text,
@@ -62,7 +61,7 @@ router.route('/seats/:id').put((req, res) => {
 });
 
 router.route('/seats/:id').delete((req, res) => {
-    let elem = db.seats.find(item => {
+    const elem = db.seats.find(item => {
         return item.id == req.params.id
     });
 

@@ -24,12 +24,12 @@ router.route('/concerts').post((req, res) => {
     const id = uuid();
 
     if(author && text && id){    
-        const newTestimonial = {
+        const newConcert = {
             id: id,
             author: author,
             text: text,
         };
-        db.concerts.push(newTestimonial);
+        db.concerts.push(newConcert);
         res.json( {message: 'OK'} );
     }
     else {
@@ -38,12 +38,9 @@ router.route('/concerts').post((req, res) => {
 });
 
 router.route('/concerts/:id').put((req, res) => {
-    let elem = db.concerts.find(item => {
-        return item.id == req.params.id
-     });
     const { author, text } = req.body;
 
-    elem = {
+    const elem = {
         id: req.params.id,
         author: author,
         text: text,
@@ -59,7 +56,7 @@ router.route('/concerts/:id').put((req, res) => {
 });
 
 router.route('/concerts/:id').delete((req, res) => {
-    let elem = db.concerts.find(item => {
+    const elem = db.concerts.find(item => {
         return item.id == req.params.id
     });
 

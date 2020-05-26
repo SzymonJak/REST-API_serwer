@@ -38,12 +38,9 @@ router.route('/testimonials').post((req, res) => {
 });
 
 router.route('/testimonials/:id').put((req, res) => {
-    let elem = db.testimonials.find(item => {
-        return item.id == req.params.id
-     });
     const { author, text } = req.body;
 
-    elem = {
+    const elem = {
         id: req.params.id,
         author: author,
         text: text,
@@ -59,7 +56,7 @@ router.route('/testimonials/:id').put((req, res) => {
 });
 
 router.route('/testimonials/:id').delete((req, res) => {
-    let elem = db.testimonials.find(item => {
+    const elem = db.testimonials.find(item => {
         return item.id == req.params.id
     });
 
