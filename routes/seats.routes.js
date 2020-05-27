@@ -43,16 +43,24 @@ router.route('/seats').post((req, res) => {
 });
 
 router.route('/seats/:id').put((req, res) => {
-    const { author, text } = req.body;
+    const { day, seat, client, email } = req.body;
 
-    const elem = {
+    const elem = db.seats.find(item => {
+        return item.id == req.params.id
+    });
+
+    const index = db.seats.indexOf(elem);
+
+    const newElem = {
         id: req.params.id,
-        author: author,
-        text: text,
-    }
+        day: day,
+        seat: seat,
+        client: client,
+        email: email,
+    };
 
-    if(author && text){
-        db.seats.push(elem);
+    if(day && seat && client && email){
+        db.seats.splice(index, 1, newElem);
         res.json({ message: 'OK' });
     }
     else {

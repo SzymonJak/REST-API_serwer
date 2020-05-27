@@ -40,14 +40,20 @@ router.route('/concerts').post((req, res) => {
 router.route('/concerts/:id').put((req, res) => {
     const { author, text } = req.body;
 
-    const elem = {
+    const elem = db.concerts.find(item => {
+        return item.id == req.params.id
+    });
+
+    const index = db.concerts.indexOf(elem);
+
+    const newElem = {
         id: req.params.id,
         author: author,
         text: text,
     }
 
     if(author && text){
-        db.concerts.push(elem);
+        db.concerts.splice(index, 1, newElem);
         res.json({ message: 'OK' });
     }
     else {
