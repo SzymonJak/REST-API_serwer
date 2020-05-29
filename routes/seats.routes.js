@@ -51,16 +51,8 @@ router.route('/seats/:id').put((req, res) => {
 
     const index = db.seats.indexOf(elem);
 
-    const newElem = {
-        id: req.params.id,
-        day: day,
-        seat: seat,
-        client: client,
-        email: email,
-    };
-
     if(day && seat && client && email){
-        db.seats.splice(index, 1, newElem);
+        db.seats[index] = {...elem, day, seat, client, email};
         res.json({ message: 'OK' });
     }
     else {

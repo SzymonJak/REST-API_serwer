@@ -46,14 +46,8 @@ router.route('/concerts/:id').put((req, res) => {
 
     const index = db.concerts.indexOf(elem);
 
-    const newElem = {
-        id: req.params.id,
-        author: author,
-        text: text,
-    }
-
     if(author && text){
-        db.concerts.splice(index, 1, newElem);
+        db.concerts[index] = {...elem, author, text};
         res.json({ message: 'OK' });
     }
     else {

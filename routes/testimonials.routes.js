@@ -46,14 +46,8 @@ router.route('/testimonials/:id').put((req, res) => {
 
     const index = db.testimonials.indexOf(elem);
 
-    const newElem = {
-        id: req.params.id,
-        author: author,
-        text: text,
-    }
-
     if(author && text){
-        db.testimonials.splice(index, 1, newElem);
+        db.testimonials[index] = {...elem, author, text};
         res.json({ message: 'OK' });
     }
     else {
