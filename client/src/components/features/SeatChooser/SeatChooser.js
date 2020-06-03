@@ -7,13 +7,14 @@ import './SeatChooser.scss';
 class SeatChooser extends React.Component {
   
   componentDidMount() {
+    const { loadSeats, updateSeats } = this.props;
+    loadSeats();
+
     const port = Number(process.env.NODE_ENV) || 'localhost:8000';
     this.socket = io.connect(port);
 
     this.socket.on('seatsUpdated', seats => updateSeats(seats));
 
-    const { loadSeats, updateSeats } = this.props;
-    loadSeats();
     // this.loadSeatsInterval = setInterval(() => {
     //   loadSeats();
     // }, 120000);
@@ -38,6 +39,14 @@ class SeatChooser extends React.Component {
     else return <Button key={seatId} color="primary" className="seats__seat" outline onClick={(e) => updateSeat(e, seatId)}>{seatId}</Button>;
   }
 
+  freeSeats = () => {
+    let free = 0;
+    for (let i = 0; i < 50; i++) {
+      if (this.isTaken(i) === false) free++;
+    }
+    return `Free seats: ${free}/50`;
+  }
+
   render() {
 
     const { prepareSeat } = this;
@@ -51,6 +60,7 @@ class SeatChooser extends React.Component {
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].success) && <div className="seats">{[...Array(50)].map((x, i) => prepareSeat(i+1) )}</div>}
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].pending) && <Progress animated color="primary" value={50} /> }
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].error) && <Alert color="warning">Couldn't load seats...</Alert> }
+        <p>{this.freeSeats()}</p>
       </div>
     )
   };
