@@ -1,77 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid-random');
-const db = require('../db');
+const SeatController = require('../controllers/seats.controller');
 
-router.route('/seats').get((req, res) => {
-    res.json(db.seats);
-});
-
-router.route('/seats/random').get((req, res) => {
-    const random = Math.floor(Math.random() * (db.seats.length));
-    res.json(db.seats[random]);
-});
-
-router.route('/seats/:id').get((req, res) => {
-    const elem = db.seats.find(item => {
-        return item.id == req.params.id
-     });
-    res.json(elem);
-});
-
-router.route('/seats').post((req, res) => {
-    const { day, seat, client, email } = req.body;
-    const id = uuid();
-
-    const newSeat = {
-        id: id,
-        day: day,
-        seat: seat,
-        client: client,
-        email: email,
-    };
-
-    const checkSeat = db.seats.some(seat => seat.day == newSeat.day && seat.seat == newSeat.seat);
-
-    if(checkSeat === true){    
-        res.json( {message: 'Sorry, the slot is already taken'} );
-    }
-    else {
-        db.seats.push(newSeat);
-        res.json( {message: 'OK'} );
-    }
-
-    req.io.emit('seatsUpdated', db.seats);
-});
-
-router.route('/seats/:id').put((req, res) => {
-    const { day, seat, client, email } = req.body;
-
-    const elem = db.seats.find(item => {
-        return item.id == req.params.id
-    });
-
-    const index = db.seats.indexOf(elem);
-
-    if(day && seat && client && email){
-        db.seats[index] = {...elem, day, seat, client, email};
-        res.json({ message: 'OK' });
-    }
-    else {
-        res.json('Some data is missing...');
-    }
-});
-
-router.route('/seats/:id').delete((req, res) => {
-    const elem = db.seats.find(item => {
-        return item.id == req.params.id
-    });
-
-    const index = db.seats.indexOf(elem);
-
-    db.seats.splice(index, 1);
-
-    res.json({ message: 'OK' });
-});
+router.get('/seats', SeatController.getAll);
+router.get('/seats/random', SeatController.getRandom);
+router.get('/seats/:id', SeatController.getSelected);
+router.post('/seats', SeatController.postNew);
+router.put('/seats/:id', SeatController.modifyDoc);
+router.delete('/seats/:id', SeatController.deleteDoc);
 
 module.exports = router;

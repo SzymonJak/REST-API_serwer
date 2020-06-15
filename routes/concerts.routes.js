@@ -1,70 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid-random');
-const db = require('../db');
+const ConcertController = require('../controllers/concerts.controller');
 
-router.route('/concerts').get((req, res) => {
-    res.json(db.concerts);
-});
-
-router.route('/concerts/random').get((req, res) => {
-    const random = Math.floor(Math.random() * (db.concerts.length));
-    res.json(db.concerts[random]);
-});
-
-router.route('/concerts/:id').get((req, res) => {
-    const elem = db.concerts.find(item => {
-        return item.id == req.params.id
-     });
-    res.json(elem);
-});
-
-router.route('/concerts').post((req, res) => {
-    const { author, text } = req.body;
-    const id = uuid();
-
-    if(author && text && id){    
-        const newConcert = {
-            id: id,
-            author: author,
-            text: text,
-        };
-        db.concerts.push(newConcert);
-        res.json( {message: 'OK'} );
-    }
-    else {
-        res.json('Some data is missing...');
-    }
-});
-
-router.route('/concerts/:id').put((req, res) => {
-    const { author, text } = req.body;
-
-    const elem = db.concerts.find(item => {
-        return item.id == req.params.id
-    });
-
-    const index = db.concerts.indexOf(elem);
-
-    if(author && text){
-        db.concerts[index] = {...elem, author, text};
-        res.json({ message: 'OK' });
-    }
-    else {
-        res.json('Some data is missing...');
-    }
-});
-
-router.route('/concerts/:id').delete((req, res) => {
-    const elem = db.concerts.find(item => {
-        return item.id == req.params.id
-    });
-
-    const index = db.concerts.indexOf(elem);
-
-    db.concerts.splice(index, 1);
-
-    res.json({ message: 'OK' });
-});
+router.get('/concerts', ConcertController.getAll);
+router.get('/concerts/random', ConcertController.getRandom);
+router.get('/concerts/:id', ConcertController.getSelected);
+router.post('/concerts', ConcertController.postNew);
+router.put('/concerts/:id', ConcertController.modifyDoc);
+router.delete('/concerts/:id', ConcertController.deleteDoc);
 
 module.exports = router;
