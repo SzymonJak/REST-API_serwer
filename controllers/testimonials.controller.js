@@ -53,7 +53,7 @@ exports.modifyDoc = async (req, res) => {
 
     if(author && text) {
         try {
-           const testi = Testimonial.findById(req.params.id);
+           const testi = await Testimonial.findById(req.params.id);
            if(testi) {
             await Testimonial.updateOne({_id: req.params.id}, {$set: {author, text}});
             res.json({message: 'OK'});

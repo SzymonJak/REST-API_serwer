@@ -53,7 +53,7 @@ exports.modifyDoc = async (req, res) => {
 
     if(day && seat && client && email) {
         try {
-           const seat = Seat.findById(req.params.id);
+           const seat = await Seat.findById(req.params.id);
            if(seat) {
             await Seat.updateOne({_id: req.params.id}, {$set: { day, seat, client, email }});
             res.json({message: 'OK'});
