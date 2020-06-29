@@ -53,3 +53,5 @@ io.on('connection', (socket) => {
 app.use((req, res) => {
     res.status(404).json('Not found...')
 });
+
+module.exports = server;
