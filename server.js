@@ -3,16 +3,19 @@ const cors = require('cors');
 const path = require('path');
 const socket = require('socket.io')
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 
 const app = express();
 
 const testimonialsRoutes = require('./routes/testimonials.routes');
 const concertsRoutes = require('./routes/concerts.routes');
 const seatsRoutes = require('./routes/seats.routes');
+const { use } = require('chai');
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 app.use(cors());
+app.use(helmet());
 
 app.use((req, res, next) => {
     req.io = io;
