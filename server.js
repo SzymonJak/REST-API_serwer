@@ -31,6 +31,7 @@ app.get('*', (req, res) => {
 });
 
 mongoose.connect('mongodb+srv://' + process.env.username + ':' + process.env.dbpass + '@cluster0-h137k.mongodb.net/NewWaveDB?retryWrites=true&w=majority', { useNewURLParser: true, useUnifiedTopology: true });
+// mongoose.connect('mongodb+srv://Szymon1:easyPASS1@cluster0-h137k.mongodb.net/NewWaveDB?retryWrites=true&w=majority', { useNewURLParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 
