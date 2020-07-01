@@ -47,9 +47,9 @@ exports.getPerformer = async (req, res) => {
 
 exports.getGenre = async (req, res) => {
     try {
-        const genr = await Concert.find({genre: req.params.genre});
-        if(!genr) res.status(404).json({message: 'Not found'});
-        else res.json(genr);
+        const genre = await Concert.find({genre: req.params.genre});
+        if(!genre) res.status(404).json({message: 'Not found'});
+        else res.json(genre);
     }
     catch(err) {
         res.status(500).json({message: err});

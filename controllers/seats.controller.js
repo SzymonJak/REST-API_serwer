@@ -37,13 +37,13 @@ exports.getSelected = async (req, res) => {
 exports.postNew = async (req, res) => {
     const day = sanitize(req.body.day);
     const seat = sanitize(req.body.seat);
-    const clean = sanitize(req.body.client);
+    const client = sanitize(req.body.client);
     const email = sanitize(req.body.email);
 
 
-    if(day && seat && clean && email) {
+    if(day && seat && client && email) {
         try {
-            const newSeat = new Seat({ day, seat, client: clean, email });
+            const newSeat = new Seat({ day, seat, client, email });
             await newSeat.save();
             res.json({message: 'OK'});
         }
